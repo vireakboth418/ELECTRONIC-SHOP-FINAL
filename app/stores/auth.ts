@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-type Account = { name: string; email: string; password: string }
-type SignedInUser = Pick<Account, 'name' | 'email'>
-const ACCOUNTS_KEY = 'nuxt-first-accounts'
+type Account = { id?: number | string; name: string; email: string; password: string }
+type SignedInUser = Omit<Account, 'password'>
 const SESSION_KEY = 'nuxt-first-session'
+const API_BASE = 'http://localhost:8000'
+const USERS_ENDPOINT = `${API_BASE}/users`
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<SignedInUser | null>(null)
@@ -20,28 +21,57 @@ export const useAuthStore = defineStore('auth', () => {
     isReady.value = true
   }
 
-  function accounts(): Account[] {
-    const saved = localStorage.getItem(ACCOUNTS_KEY)
-    return saved ? JSON.parse(saved) : []
-  }
-
   function startSession(account: Account) {
-    user.value = { name: account.name, email: account.email }
+    const { password: _password, ...signedInUser } = account
+    user.value = signedInUser
     localStorage.setItem(SESSION_KEY, JSON.stringify(user.value))
   }
 
-  function register(name: string, email: string, password: string) {
-    const all = accounts()
-    const normalizedEmail = email.trim().toLowerCase()
-    if (all.some((account) => account.email === normalizedEmail)) throw new Error('An account with this email already exists.')
-    const account = { name: name.trim(), email: normalizedEmail, password }
-    all.push(account)
-    localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(all))
-    startSession(account)
+async function register(name: string, email: string, password: string) {
+  const normalizedEmail = email.trim().toLowerCase()
+
+  const existingResponse = await fetch(
+    `${USERS_ENDPOINT}?email=${encodeURIComponent(normalizedEmail)}`
+  )
+
+  if (!existingResponse.ok) {
+    throw new Error('Unable to check existing accounts.')
   }
 
-  function login(email: string, password: string) {
-    const account = accounts().find((item) => item.email === email.trim().toLowerCase() && item.password === password)
+  const existingAccounts = await existingResponse.json() as Account[]
+
+  if (existingAccounts.length) {
+    throw new Error('An account with this email already exists.')
+  }
+
+  const account = {
+    name: name.trim(),
+    email: normalizedEmail,
+    password
+  }
+
+  const response = await fetch(USERS_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(account)
+  })
+
+  if (!response.ok) {
+    throw new Error('Unable to create your account.')
+  }
+
+  startSession(await response.json() as Account)
+}
+
+  async function login(email: string, password: string) {
+    const normalizedEmail = email.trim().toLowerCase()
+    const response = await fetch(`${USERS_ENDPOINT}?email=${encodeURIComponent(normalizedEmail)}`)
+    if (!response.ok) throw new Error('Unable to log in.')
+
+    const accounts = await response.json() as Account[]
+    const account = accounts.find((item) => item.password === password)
     if (!account) throw new Error('Incorrect email or password.')
     startSession(account)
   }

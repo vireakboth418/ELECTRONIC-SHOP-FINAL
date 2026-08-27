@@ -1,2 +1,5 @@
-if you want to start server use this comment
-npx json-server ./app/api/product.json
+To start the JSON server used for products and authentication:
+
+```bash
+npx json-server ./app/api/api.json
+```

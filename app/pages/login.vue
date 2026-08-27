@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { navigateTo } from '#app'
 
 const email = ref('')
 const password = ref('')
 const error = ref('')
 const auth = useAuthStore()
 const route = useRoute()
-const router = useRouter()
 
-function submit() {
+async function submit() {
   error.value = ''
   try {
-    auth.login(email.value, password.value)
-    router.push(typeof route.query.redirect === 'string' ? route.query.redirect : '/product')
+    await auth.login(email.value, password.value)
+    navigateTo(typeof route.query.redirect === 'string' ? route.query.redirect : '/product')
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Unable to log in.'
   }

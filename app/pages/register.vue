@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { navigateTo } from '#app'
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const error = ref('')
 const auth = useAuthStore()
-const router = useRouter()
 
-function submit() {
+async function submit() {
   error.value = ''
   try {
-    auth.register(name.value, email.value, password.value)
-    router.push('/product')
+    await auth.register(name.value, email.value, password.value)
+    navigateTo('/product')
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Unable to create your account.'
   }

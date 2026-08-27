@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useCounterStore } from '../stores/counter'
 import { useAuthStore } from '../stores/auth'
 import { useCartStore } from '../stores/cart'
 import { useProductStore } from '../stores/productApi'
 import type { Product } from '../type/product'
+import { navigateTo } from '#app'
 
 const counter = useCounterStore()
 const auth = useAuthStore()
 const cart = useCartStore()
 const productStore = useProductStore()
-const router = useRouter()
+const route = useRoute()
 const searchQuery = ref('')
 const isMobileMenuOpen = ref(false)
 
@@ -31,19 +32,19 @@ onMounted(() => {
 function logout() {
   auth.logout()
   isMobileMenuOpen.value = false
-  router.push('/')
+  navigateTo('/')
 }
 
 function search() {
   const query = searchQuery.value.trim()
   isMobileMenuOpen.value = false
-  router.push({ path: '/product', query: query ? { search: query } : {} })
+  navigateTo({ path: '/product', query: query ? { search: query } : {} })
 }
 
 function selectProduct(product: Product) {
   searchQuery.value = ''
   isMobileMenuOpen.value = false
-  router.push(`/productdetail?id=${product.id}`)
+  navigateTo(`/productdetail?id=${product.id}`)
 }
 
 function closeMobileMenu() {

@@ -13,7 +13,7 @@ export const useProductStore = defineStore('prouctApi',()=>{
     async function getAllProducts(){
         isGetProductsLoading.value = true
         try{
-            const res = await fetch("/api/products")
+            const res = await fetch("http://localhost:8000/products")
             const data = await res.json()
             productList.value = data
         }catch(err){
@@ -27,7 +27,7 @@ export const useProductStore = defineStore('prouctApi',()=>{
         isloading.value = true
         try{
             
-            const res = await fetch(`/api/products/${id}`)
+            const res = await fetch(`http://localhost:8000/products/${id}`)
             if (!res.ok) {
                 return null
             }

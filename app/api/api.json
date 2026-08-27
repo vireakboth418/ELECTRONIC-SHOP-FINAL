@@ -2,10 +2,10 @@
   "products": [
     {
       "id": "1",
-      "name": "iPhone 15 Pro",
+      "name": "iPhone 11 Pro",
       "category": "Smartphone",
       "price": 999,
-      "image": "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=500",
+      "image": "https://i5.walmartimages.com/seo/Used-Apple-iPhone-11-64GB-Red-Sprint-Used_8e866b89-8726-4515-a7ad-ec5bc96b01d4_1.443661f2c722fc3d0b1d00436e4fa3e2.jpeg",
       "description": "Premium smartphone with a powerful camera and A17 Pro chip.",
       "brand": "Apple",
       "stock": 15,
@@ -13,10 +13,80 @@
     },
     {
       "id": "2",
-      "name": "Samsung Galaxy S24 Ultra",
+      "name": "iphone 12",
       "category": "Smartphone",
       "price": 1199,
-      "image": "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXaAOBV97s0TqxnxKw75t0S1s3z8OnyTe2cVM22EO5TA&s=10",
+      "description": "Flagship Android smartphone with an advanced camera system.",
+      "brand": "Samsung",
+      "stock": 20,
+      "rating": 4.9
+    },
+    
+    {
+      "id": "3",
+      "name": "iphone 13",
+      "category": "Smartphone",
+      "price": 1199,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCi0uy8czKzUUPce-7olIRYUnrhu70_JbrLYpmI_A75A&s=10",
+      "description": "Flagship Android smartphone with an advanced camera system.",
+      "brand": "Samsung",
+      "stock": 20,
+      "rating": 4.9
+    },
+    
+    {
+      "id": "4",
+      "name": "iphone 14",
+      "category": "Smartphone",
+      "price": 1199,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9-6Imjp22OFuTEqo0n7mWWmnuYyShLwJUPkA_ZSQZNA&s=10",
+      "description": "Flagship Android smartphone with an advanced camera system.",
+      "brand": "Samsung",
+      "stock": 20,
+      "rating": 4.9
+    },
+    {
+      "id": "5",
+      "name": "iPhone 11 Pro",
+      "category": "Smartphone",
+      "price": 999,
+      "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQCeb0mex7rAPiWYlObHumLbey_wHZawrT47qmqm5zlplmO3-xmzZ5PJv12XFEHgYerF5y2STJTyd3TGOp2hV1qEz5QgotXDjpD83wkDRbgMf9r8NkycUW3PTboAm2QMjtx6LxXSw&usqp=CAc",
+      "description": "Premium smartphone with a powerful camera and A17 Pro chip.",
+      "brand": "Apple",
+      "stock": 15,
+      "rating": 4.8
+    },
+    {
+      "id": "2",
+      "name": "iphone 12",
+      "category": "Smartphone",
+      "price": 1199,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXaAOBV97s0TqxnxKw75t0S1s3z8OnyTe2cVM22EO5TA&s=10",
+      "description": "Flagship Android smartphone with an advanced camera system.",
+      "brand": "Samsung",
+      "stock": 20,
+      "rating": 4.9
+    },
+    
+    {
+      "id": "3",
+      "name": "iphone 13",
+      "category": "Smartphone",
+      "price": 1199,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCi0uy8czKzUUPce-7olIRYUnrhu70_JbrLYpmI_A75A&s=10",
+      "description": "Flagship Android smartphone with an advanced camera system.",
+      "brand": "Samsung",
+      "stock": 20,
+      "rating": 4.9
+    },
+    
+    {
+      "id": "4",
+      "name": "iphone 14",
+      "category": "Smartphone",
+      "price": 1199,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9-6Imjp22OFuTEqo0n7mWWmnuYyShLwJUPkA_ZSQZNA&s=10",
       "description": "Flagship Android smartphone with an advanced camera system.",
       "brand": "Samsung",
       "stock": 20,

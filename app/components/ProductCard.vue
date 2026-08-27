@@ -18,7 +18,7 @@ const props = defineProps<{
       <img
         :src="props.image"
         :alt="props.name"
-        class="h-48 w-full object-cover"
+        class="h-70 w-full object-cover"
       />
 
     <div class="p-5">

@@ -5,8 +5,15 @@ import { useProductStore } from '../stores/productApi'
 
 const productStore = useProductStore()
 const featuredProducts = computed(() => (productStore.productList ?? []).slice(0, 4))
+const saleProduct = computed(()=>(productStore.productList?? []).filter((pro)=>pro.tag == "Best Seller"))
+const populars = computed(()=>{
+  return (productStore.productList?? []).filter(pro=> pro.tag == "Popular").slice(0,4)
+})
+onMounted(async() =>{ 
+ await productStore.getAllProducts()
 
-onMounted(() => productStore.getAllProducts())
+
+})
 </script>
 
 <template>
@@ -43,5 +50,36 @@ onMounted(() => productStore.getAllProducts())
         <ProductCard v-for="product in featuredProducts" :key="product.id" v-bind="product" />
       </div>
     </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-bold uppercase tracking-wider text-blue-600">Popular picks</p>
+          <h2 class="mt-1 text-3xl font-bold text-slate-900">Best Saller</h2>
+        </div>
+        <NuxtLink to="/product" class="font-semibold text-blue-600 hover:text-blue-700">View all products →</NuxtLink>
+      </div>
+
+      <div v-if="productStore.isGetProductsLoading" class="py-12 text-center text-slate-600">Loading products...</div>
+      <div v-else class="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ProductCard v-for="product in saleProduct" :key="product.id" v-bind="product" />
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-bold uppercase tracking-wider text-blue-600">Popular picks</p>
+          <h2 class="mt-1 text-3xl font-bold text-slate-900">Popular</h2>
+        </div>
+        <NuxtLink to="/product" class="font-semibold text-blue-600 hover:text-blue-700">View all products →</NuxtLink>
+      </div>
+
+      <div v-if="productStore.isGetProductsLoading" class="py-12 text-center text-slate-600">Loading products...</div>
+      <div v-else class="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ProductCard v-for="product in populars" :key="product.id" v-bind="product" />
+      </div>
+    </section>
+
   </main>
 </template>

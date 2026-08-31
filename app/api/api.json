@@ -3,109 +3,61 @@
     {
       "id": "1",
       "name": "iPhone 11 Pro",
-      "category": "Smartphone",
+      "category": "Phone",
       "price": 999,
       "discount": 15,
       "finalPrice": 849.15,
       "tag": "Sale",
       "image": "https://i5.walmartimages.com/seo/Used-Apple-iPhone-11-64GB-Red-Sprint-Used_8e866b89-8726-4515-a7ad-ec5bc96b01d4_1.443661f2c722fc3d0b1d00436e4fa3e2.jpeg",
-      "description": "Premium smartphone with a powerful camera and A17 Pro chip.",
+      "description": "Premium smartphone with a powerful camera and A13 Bionic chip.",
       "brand": "Apple",
       "stock": 15,
       "rating": 4.8
     },
     {
       "id": "2",
-      "name": "iphone 12",
-      "category": "Smartphone",
+      "name": "iPhone 12",
+      "category": "Phone",
       "price": 1199,
       "discount": 10,
       "finalPrice": 1079.1,
       "tag": "Sale",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXaAOBV97s0TqxnxKw75t0S1s3z8OnyTe2cVM22EO5TA&s=10",
-      "description": "Flagship Android smartphone with an advanced camera system.",
-      "brand": "Samsung",
+      "description": "Apple smartphone with Super Retina XDR display and A14 Bionic chip.",
+      "brand": "Apple",
       "stock": 20,
       "rating": 4.9
     },
-    
     {
       "id": "3",
-      "name": "iphone 13",
-      "category": "Smartphone",
+      "name": "iPhone 13",
+      "category": "Phone",
       "price": 1199,
       "discount": 5,
       "finalPrice": 1139.05,
       "tag": "Popular",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCi0uy8czKzUUPce-7olIRYUnrhu70_JbrLYpmI_A75A&s=10",
-      "description": "Flagship Android smartphone with an advanced camera system.",
-      "brand": "Samsung",
+      "description": "Advanced dual-camera system with A15 Bionic chip.",
+      "brand": "Apple",
       "stock": 20,
       "rating": 4.9
     },
-    
     {
       "id": "4",
-      "name": "iphone 14",
-      "category": "Smartphone",
+      "name": "iPhone 14",
+      "category": "Phone",
       "price": 1199,
       "discount": 0,
       "finalPrice": 1199,
       "tag": "New",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9-6Imjp22OFuTEqo0n7mWWmnuYyShLwJUPkA_ZSQZNA&s=10",
-      "description": "Flagship Android smartphone with an advanced camera system.",
-      "brand": "Samsung",
+      "description": "Impressive all-day battery life and groundbreaking safety features.",
+      "brand": "Apple",
       "stock": 20,
       "rating": 4.9
     },
     {
       "id": "5",
-      "name": "iPhone 11 Pro",
-      "category": "Smartphone",
-      "price": 999,
-      "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQCeb0mex7rAPiWYlObHumLbey_wHZawrT47qmqm5zlplmO3-xmzZ5PJv12XFEHgYerF5y2STJTyd3TGOp2hV1qEz5QgotXDjpD83wkDRbgMf9r8NkycUW3PTboAm2QMjtx6LxXSw&usqp=CAc",
-      "description": "Premium smartphone with a powerful camera and A17 Pro chip.",
-      "brand": "Apple",
-      "stock": 15,
-      "rating": 4.8
-    },
-    {
-      "id": "2",
-      "name": "iphone 12",
-      "category": "Smartphone",
-      "price": 1199,
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXaAOBV97s0TqxnxKw75t0S1s3z8OnyTe2cVM22EO5TA&s=10",
-      "description": "Flagship Android smartphone with an advanced camera system.",
-      "brand": "Samsung",
-      "stock": 20,
-      "rating": 4.9
-    },
-    
-    {
-      "id": "3",
-      "name": "iphone 13",
-      "category": "Smartphone",
-      "price": 1199,
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCi0uy8czKzUUPce-7olIRYUnrhu70_JbrLYpmI_A75A&s=10",
-      "description": "Flagship Android smartphone with an advanced camera system.",
-      "brand": "Samsung",
-      "stock": 20,
-      "rating": 4.9
-    },
-    
-    {
-      "id": "4",
-      "name": "iphone 14",
-      "category": "Smartphone",
-      "price": 1199,
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9-6Imjp22OFuTEqo0n7mWWmnuYyShLwJUPkA_ZSQZNA&s=10",
-      "description": "Flagship Android smartphone with an advanced camera system.",
-      "brand": "Samsung",
-      "stock": 20,
-      "rating": 4.9
-    },
-    {
-      "id": "3",
       "name": "MacBook Air M3",
       "category": "Laptop",
       "price": 1099,
@@ -119,7 +71,7 @@
       "rating": 4.9
     },
     {
-      "id": "4",
+      "id": "6",
       "name": "Dell XPS 15",
       "category": "Laptop",
       "price": 1399,
@@ -133,9 +85,9 @@
       "rating": 4.7
     },
     {
-      "id": "5",
+      "id": "7",
       "name": "Sony WH-1000XM5",
-      "category": "Headphones",
+      "category": "Headphone",
       "price": 399,
       "discount": 10,
       "finalPrice": 359.1,
@@ -147,9 +99,9 @@
       "rating": 4.8
     },
     {
-      "id": "6",
+      "id": "8",
       "name": "AirPods Pro 2",
-      "category": "Earbuds",
+      "category": "Headphone",
       "price": 249,
       "discount": 5,
       "finalPrice": 236.55,
@@ -161,9 +113,9 @@
       "rating": 4.7
     },
     {
-      "id": "7",
+      "id": "9",
       "name": "Apple Watch Series 9",
-      "category": "Smartwatch",
+      "category": "Smart Watch",
       "price": 429,
       "discount": 10,
       "finalPrice": 386.1,
@@ -175,9 +127,9 @@
       "rating": 4.6
     },
     {
-      "id": "8",
+      "id": "10",
       "name": "Samsung Galaxy Watch 6",
-      "category": "Smartwatch",
+      "category": "Smart Watch",
       "price": 299,
       "discount": 5,
       "finalPrice": 284.05,
@@ -189,7 +141,7 @@
       "rating": 4.5
     },
     {
-      "id": "9",
+      "id": "11",
       "name": "iPad Air M2",
       "category": "Tablet",
       "price": 599,
@@ -203,7 +155,7 @@
       "rating": 4.8
     },
     {
-      "id": "10",
+      "id": "12",
       "name": "Sony PlayStation 5",
       "category": "Gaming",
       "price": 499,
@@ -217,7 +169,7 @@
       "rating": 4.9
     },
     {
-      "id": "11",
+      "id": "13",
       "name": "Xbox Series X",
       "category": "Gaming",
       "price": 499,
@@ -231,7 +183,7 @@
       "rating": 4.8
     },
     {
-      "id": "12",
+      "id": "14",
       "name": "Logitech G Pro X Keyboard",
       "category": "Accessories",
       "price": 149,
@@ -245,7 +197,7 @@
       "rating": 4.6
     },
     {
-      "id": "13",
+      "id": "15",
       "name": "Logitech G502 Gaming Mouse",
       "category": "Accessories",
       "price": 79,
@@ -259,7 +211,7 @@
       "rating": 4.7
     },
     {
-      "id": "14",
+      "id": "16",
       "name": "JBL Charge 5",
       "category": "Speaker",
       "price": 179,
@@ -273,7 +225,7 @@
       "rating": 4.7
     },
     {
-      "id": "15",
+      "id": "17",
       "name": "Anker Power Bank 20,000mAh",
       "category": "Accessories",
       "price": 49,
@@ -303,45 +255,75 @@
     {
       "id": "4",
       "name": "Smart Watch"
+    },
+    {
+      "id": "5",
+      "name": "Tablet"
+    },
+    {
+      "id": "6",
+      "name": "Gaming"
+    },
+    {
+      "id": "7",
+      "name": "Accessories"
+    },
+    {
+      "id": "8",
+      "name": "Speaker"
     }
   ],
   "users": [
     {
       "id": "1",
-      "name": "Vireakboth",
+      "firstName": "Vireakboth",
+      "lastName": "User",
+      "name": "Vireakboth User",
       "email": "vireakboth@gmail.com",
       "password": "123456"
     },
     {
       "id": "2",
-      "name": "Dara",
+      "firstName": "Dara",
+      "lastName": "User",
+      "name": "Dara User",
       "email": "dara@gmail.com",
       "password": "123456"
     },
     {
-      "name": "both",
+      "id": "3",
+      "firstName": "Heng",
+      "lastName": "Vireakboth",
+      "name": "Heng Vireakboth",
       "email": "hengvireak50@gmail.com",
-      "password": "123456",
-      "id": "cvea4GQlX8I"
+      "password": "123456"
+    },
+    {
+      "id": "5vQ8m2tzPJg",
+      "firstName": "Seyha",
+      "lastName": "Moung",
+      "name": "Seyha Moung",
+      "email": "seyhamoung825@gmail.com",
+      "password": "Hello1"
     }
   ],
   "orders": [
     {
       "id": "1",
-      "userId": 1,
+      "userId": "1",
       "products": [
         {
-          "productId": 1,
+          "productId": "1",
           "quantity": 1
         },
         {
-          "productId": 5,
+          "productId": "5",
           "quantity": 2
         }
       ],
-      "total": 1797,
+      "total": 3197,
       "status": "Pending"
     }
-
   ]
+
 }

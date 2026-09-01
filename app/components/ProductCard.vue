@@ -34,7 +34,7 @@ function handleAddToCart(event: Event) {
 </script>
 
 <template>
-  <div class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200/70 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
+  <div class="group relative flex flex-col  rounded-t-lg overflow-hidden  border border-slate-200/70 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
     
     <!-- Image Display & Top Badges -->
     <NuxtLink :to="`/productdetail?id=${props.id}`" class="relative block aspect-square w-full overflow-hidden bg-slate-50">
@@ -56,15 +56,15 @@ function handleAddToCart(event: Event) {
 
       <!-- Category & Stock Status Badges -->
       <div class="absolute inset-x-3 top-3 flex items-center justify-between pointer-events-none">
-        <span class="rounded-full border border-white/20 bg-slate-900/70 px-3 py-1 text-[10px] font-semibold text-white shadow-xs backdrop-blur-md">
+        <span class="rounded-sm border border-white/20 bg-slate-900/70 px-3 py-1 text-[10px] font-semibold text-white shadow-xs backdrop-blur-md">
           {{ props.category }}
         </span>
 
         <span 
-          class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-medium backdrop-blur-md"
+          class="inline-flex items-center gap-1 rounded-sm px-2.5 py-1 text-[10px] font-medium backdrop-blur-md"
           :class="props.inStock ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-700 border border-amber-500/20'"
         >
-          <span class="h-1.5 w-1.5 rounded-full" :class="props.inStock ? 'bg-emerald-500' : 'bg-amber-500'"></span>
+          <span class="h-1.5 w-1.5 rounded-se-2xl" :class="props.inStock ? 'bg-emerald-500' : 'bg-amber-500'"></span>
           {{ props.inStock ? 'In Stock' : 'Low Stock' }}
         </span>
       </div>
@@ -97,11 +97,11 @@ function handleAddToCart(event: Event) {
 
         <button
           type="button"
-          class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+          class="inline-flex items-center gap-2 rounded-se-2xl bg-blue-600 px-2 py-2  text-xs font-semibold text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
           @click="handleAddToCart"
         >
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"  />
           </svg>
           Add to Cart
         </button>

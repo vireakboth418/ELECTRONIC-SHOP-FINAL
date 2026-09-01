@@ -43,7 +43,7 @@ async function submit() {
 
 <template>
   <main class="flex min-h-screen items-center justify-center bg-slate-50/50 py-12 px-4 sm:px-6">
-    <div class="w-full max-w-xl overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-8 shadow-xl shadow-slate-200/50 sm:p-12">
+    <div class="w-full max-w-xl overflow-hidden rounded-t-lg border border-slate-200/80 bg-white p-8 shadow-xl shadow-slate-200/50 sm:p-12">
       
       <!-- Header Section -->
       <div class="mb-8">
@@ -55,7 +55,7 @@ async function submit() {
       </div>
 
       <!-- Error Message Banner -->
-      <div v-if="error" class="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-600">
+      <div v-if="error" class="mb-6 rounded-t-lg border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-600">
         {{ error }}
       </div>
 
@@ -70,7 +70,7 @@ async function submit() {
               type="text"
               required
               placeholder="John"
-              class="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
+              class="w-full rounded-sm border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
             />
           </div>
 
@@ -81,7 +81,7 @@ async function submit() {
               type="text"
               required
               placeholder="Doe"
-              class="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
+              class="w-full rounded-sm border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
             />
           </div>
         </div>
@@ -95,7 +95,7 @@ async function submit() {
             required
             autocomplete="email"
             placeholder="Enter your email address"
-            class="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
+            class="w-full rounded-sm border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
           />
         </div>
 
@@ -112,7 +112,7 @@ async function submit() {
             autocorrect="off"
             autocapitalize="off"
             placeholder="At least 6 characters"
-            class="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
+            class="w-full rounded-sm border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
           />
         </div>
 
@@ -129,7 +129,7 @@ async function submit() {
             autocorrect="off"
             autocapitalize="off"
             placeholder="Re-enter your password"
-            class="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
+            class="w-full rounded-sm border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none"
           />
         </div>
 
@@ -137,7 +137,7 @@ async function submit() {
         <button
           type="submit"
           :disabled="isLoading"
-          class="w-full rounded-2xl bg-blue-600 py-4 text-base font-bold text-white shadow-xl shadow-blue-500/25 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+          class="w-full rounded-sm bg-blue-600 py-4 text-base font-bold text-white shadow-xl shadow-blue-500/25 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
         >
           {{ isLoading ? 'Creating Account...' : 'Create Account' }}
         </button>

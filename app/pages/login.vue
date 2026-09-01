@@ -62,7 +62,7 @@ async function handleResetPassword() {
       <!-- Header Section -->
       <div class="mb-8">
         <span class="text-xs font-bold uppercase tracking-wider text-[#2563EB]">WELCOME BACK</span>
-        <h1 class="mt-2 text-4xl font-black tracking-tight text-[#0F172A]">Sign In</h1>
+        <h1 class="mt-2 text-3xl font-black tracking-tight text-[#0F172A]">Sign In</h1>
         <p class="mt-3 text-base leading-relaxed text-[#64748B]">
           Log in to your account to save items to your cart, manage orders, and check out faster.
         </p>
@@ -85,7 +85,7 @@ async function handleResetPassword() {
             required
             autocomplete="email"
             placeholder="Enter your email address"
-            class="w-full rounded-2xl border border-slate-200 bg-[#F8FAFC]/60 px-4 py-3.5 text-base font-medium text-[#0F172A] placeholder-slate-400 transition-all focus:border-[#2563EB] focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10"
+            class="w-full rounded-xl border border-slate-200 bg-[#F8FAFC]/60 px-4 py-3.5 text-base font-medium text-[#0F172A] placeholder-slate-400 transition-all focus:border-[#2563EB] focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10"
           />
         </div>
 
@@ -110,7 +110,7 @@ async function handleResetPassword() {
               required
               autocomplete="current-password"
               placeholder="Enter your password"
-              class="w-full rounded-2xl border border-slate-200 bg-[#F8FAFC]/60 pl-4 pr-14 py-3.5 text-base font-medium text-[#0F172A] placeholder-slate-400 transition-all focus:border-[#2563EB] focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10"
+              class="w-full rounded-xl border border-slate-200 bg-[#F8FAFC]/60 pl-4 pr-14 py-3.5 text-base font-medium text-[#0F172A] placeholder-slate-400 transition-all focus:border-[#2563EB] focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10"
             />
             
             <!-- High-Quality Eye Toggle Button -->
@@ -159,7 +159,7 @@ async function handleResetPassword() {
         <button
           type="submit"
           :disabled="isLoading"
-          class="w-full rounded-2xl bg-[#1D61FF] py-4 text-base font-bold text-white shadow-[0_8px_20px_-6px_rgba(29,97,255,0.5)] transition-all hover:bg-blue-600 active:scale-[0.98] disabled:opacity-50"
+          class="w-full rounded-xl bg-[#1D61FF] py-4 text-base font-bold text-white shadow-[0_8px_20px_-6px_rgba(29,97,255,0.5)] transition-all hover:bg-blue-600 active:scale-[0.98] disabled:opacity-50"
         >
           {{ isLoading ? 'Signing In...' : 'Sign In' }}
         </button>

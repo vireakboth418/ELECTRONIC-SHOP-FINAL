@@ -30,11 +30,11 @@ function placeOrder() {
   orderPlaced.value = true
 }
 
-function increaseQuantity(id: string | number, quantity: number) {
+function increaseQuantity(id: string, quantity: number) {
   cart.updateQuantity(id, quantity + 1)
 }
 
-function decreaseQuantity(id: string | number, quantity: number) {
+function decreaseQuantity(id: string, quantity: number) {
   cart.updateQuantity(id, quantity - 1)
 }
 </script>
@@ -75,7 +75,7 @@ function decreaseQuantity(id: string | number, quantity: number) {
         </div>
 
         <!-- Empty Cart -->
-        <div v-if="!cart.items.length" class="flex min-h-[350px] flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-xs">
+        <div v-if="!cart.items.length" class="flex min-h:[150px] flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-xs">
           <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
             <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -107,7 +107,7 @@ function decreaseQuantity(id: string | number, quantity: number) {
                     <img
                       :src="item.image"
                       :alt="item.name"
-                      class="h-20 w-20 flex-shrink-0 rounded-2xl border border-slate-100 bg-slate-50 object-cover sm:h-24 sm:w-24"
+                      class="h-20 w-20 flex-shrink:0 rounded-2xl border border-slate-100 bg-slate-50 object-cover sm:h-24 sm:w-24"
                     />
                     <div>
                       <h3 class="text-base font-bold text-slate-900">{{ item.name }}</h3>
@@ -118,7 +118,7 @@ function decreaseQuantity(id: string | number, quantity: number) {
                         class="mt-2 text-xs font-semibold text-rose-500 hover:text-rose-600 transition-colors"
                         @click="cart.updateQuantity(item.id, 0)"
                       >
-                        Remove item
+                        Remove 
                       </button>
                     </div>
                   </div>
@@ -144,7 +144,7 @@ function decreaseQuantity(id: string | number, quantity: number) {
                     </div>
 
                     <!-- Line Total -->
-                    <span class="min-w-[80px] text-right text-base font-black text-slate-900">
+                    <span class="min-w:[80px] text-right text-base font-black text-slate-900">
                       ${{ (item.price * item.quantity).toFixed(2) }}
                     </span>
                   </div>

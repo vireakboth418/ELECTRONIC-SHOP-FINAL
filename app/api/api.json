@@ -445,6 +445,14 @@
       "name": "Seyha Moung",
       "email": "seyhamoung825@gmail.com",
       "password": "Hello1"
+    },
+    {
+      "firstName": "Elonn",
+      "lastName": "Musk",
+      "name": "Elonn Musk",
+      "email": "yaya@gmail.com",
+      "password": "Hello1",
+      "id": "QrrFWyGSqMM"
     }
   ],
   "orders": [
@@ -464,9 +472,15 @@
       "total": 3197,
       "status": "Pending"
     }
+<<<<<<< HEAD
 
   ]
 
 }
 
  
+=======
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
+>>>>>>> dead73b6f6e34c23f2f2a4a00a3b95b422d33837

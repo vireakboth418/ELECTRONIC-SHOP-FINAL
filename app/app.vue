@@ -9,4 +9,7 @@ import Navbar from './layout/navbar.vue';
      
 
     <NuxtPage />
+
+    <!-- Global Footer -->
+    <AppFooter />
 </template>

@@ -11,4 +11,8 @@ export interface Product {
   brand: string
   stock: number
   rating: number
+  reviewCount?: number
+  orderCount?: number
+  shareCount?: number
+  wishlistCount?: number
 }

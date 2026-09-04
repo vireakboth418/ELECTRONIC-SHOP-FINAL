@@ -21,10 +21,20 @@ const filteredProducts = computed(() => {
   )
 })
 
+// Get all products
+const allProducts = computed(() => {
+  return productStore.productList ?? []
+})
+
 // Get Smartphone products
 const smartphones = computed(() => {
   return (productStore.productList ?? []).filter(
     (product) => product.category === 'Phone'
+  )
+})
+const laptop = computed(() => {
+  return (productStore.productList ?? []).filter(
+    (product) => product.category === 'Laptop'
   )
 })
 
@@ -35,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- Loading -->
+
   <div
     v-if="productStore.isGetProductsLoading"
     class="flex min-h-screen items-center justify-center"
@@ -64,7 +74,7 @@ onMounted(() => {
       <!-- Products Found -->
       <div
         v-if="filteredProducts.length > 0"
-        class="grid grid-cols-1 gap-4 md:m-10 md:grid-cols-3 lg:m-15 lg:grid-cols-4"
+        class="grid grid-cols-1  gap-4 md:m-10 md:grid-cols-3 lg:m-15 lg:grid-cols-4"
       >
         <ProductCard
           v-for="product in filteredProducts"
@@ -101,20 +111,26 @@ onMounted(() => {
     </template>
 
 
-    <!-- ================= SMARTPHONE ================= -->
+    <!-- ================= ALL PRODUCTS ================= -->
 
     <template v-else>
-
-      <h1 class="py-10 pl-30 text-2xl font-bold">
-        Smart Phone
+      <h1 class="py-5 pl-30 text-2xl font-bold">
+        All Products
       </h1>
+     <div class="flex flex-wrap gap-3 px-20 md:m-10 lg:m-15">
+  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Phone</h1>
+  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Laptop</h1>
+  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Hardware</h1>
+  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Hardware</h1>
+  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Hardware</h1>
+</div>
 
       <div
-        v-if="smartphones.length > 0"
-        class="grid grid-cols-1 gap-4 md:m-10 md:grid-cols-3 lg:m-15 lg:grid-cols-4"
+        v-if="allProducts.length > 0"
+        class="grid grid-cols-1 px-20 rounded-se-2xl  gap-4 md:m-10 md:grid-cols-3 lg:m-15 lg:grid-cols-5"
       >
         <ProductCard
-          v-for="product in smartphones"
+          v-for="product in allProducts"
           :key="product.id"
           :id="product.id"
           :name="product.name"
@@ -124,13 +140,13 @@ onMounted(() => {
         />
       </div>
 
-      <!-- No Smartphones -->
+      <!-- No Products -->
       <div
         v-else
         class="flex min-h-100 items-center justify-center"
       >
         <h2 class="text-xl font-bold text-gray-500">
-          No smartphones available
+          No products available
         </h2>
       </div>
 

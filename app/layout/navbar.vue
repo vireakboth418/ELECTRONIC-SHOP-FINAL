@@ -8,17 +8,26 @@ import { useProductStore } from '../stores/productApi'
 import type { Product } from '../type/product'
 import { navigateTo } from '#app'
 
+
 const counter = useCounterStore()
 const auth = useAuthStore()
 const cart = useCartStore()
 const productStore = useProductStore()
 const route = useRoute()
 
+const isVisible = ref(true)
 const searchQuery = ref('')
 const selectedCategory = ref('')
 const isMobileMenuOpen = ref(false)
 const isCategoryDropdownOpen = ref(false)
 const isUserDropdownOpen = ref(false)
+
+const announcements = [
+  'FREE WORLDWIDE SHIPPING ON ORDERS OVER $100',
+  'U.S. DUTIES & TAXES INCLUDED',
+  'NEW ARRIVALS JUST LANDED — SHOP NOW',
+  'SPECIAL DISCOUNT ON ALL LAPTOPS & ACCESSORIES'
+]
 
 const categories = ref([
   'All Categories',
@@ -80,6 +89,42 @@ function closeMobileMenu() {
 </script>
 
 <template>
+
+   <div 
+    v-if="isVisible" 
+    class="relative flex h-6 w-full items-center overflow-hidden bg-black text-xs font-semibold tracking-widest text-white uppercase select-none border-b border-white/10"
+  >
+    <!-- Scrolling Container -->
+    <div class="flex whitespace-nowrap animate-marquee">
+      <!-- Group 1 -->
+      <div class="flex items-center">
+        <template v-for="(item, index) in announcements" :key="`g1-${index}`">
+          <span class="mx-8">{{ item }}</span>
+          <span class="text-slate-600">—</span>
+        </template>
+      </div>
+
+      <!-- Group 2 (Duplicate for Seamless Loop) -->
+      <div class="flex items-center">
+        <template v-for="(item, index) in announcements" :key="`g2-${index}`">
+          <span class="mx-8">{{ item }}</span>
+          <span class="text-slate-600">—</span>
+        </template>
+      </div>
+    </div>
+
+    <!-- Close Button -->
+    <button 
+      type="button" 
+      class="absolute right-0 top-0 bottom-0 z-10 flex items-center bg-black/80 px-3 text-slate-400 backdrop-blur-xs transition-colors hover:text-white"
+      aria-label="Close Announcement"
+      @click="isVisible = false"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
   <header class="sticky top-0 z-50 w-full font-sans">
     <!-- Semi-transparent Background with High Blur Effect -->
     <nav class="relative border-b border-slate-300/60 bg-slate-100/75 backdrop-blur-xl shadow-sm transition-all duration-300">
@@ -277,4 +322,24 @@ function closeMobileMenu() {
       </div>
     </nav>
   </header>
-</template>
+</template>'
+<style scoped>
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+</style>'

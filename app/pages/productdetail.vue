@@ -112,7 +112,7 @@ function handleChat() {
 
     <!-- Product Not Found State -->
     <div v-else-if="!product" class="flex min-h-[60vh] flex-col items-center justify-center text-center px-4">
-      <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500">
+      <div class="flex h-16 w-16 items-center justify-center   text-red-500">
         <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
@@ -130,7 +130,7 @@ function handleChat() {
       <!-- Back Button -->
       <button
         type="button"
-        class="mb-6 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-blue-600 active:scale-95"
+        class="mb-6 flex items-center gap-2  border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-blue-600 active:scale-95"
         @click="goBack"
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -139,7 +139,7 @@ function handleChat() {
         Back
       </button>
 
-      <div class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-200/50 md:p-10">
+      <div class="overflow-hidden  p-6   md:p-10">
         <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
 
           <!-- Product Image -->
@@ -222,10 +222,8 @@ function handleChat() {
 
               <button
                 type="button"
-                aria-label="Add to wishlist"
-                class="flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-sm font-semibold transition-all active:scale-95"
-                :class="isLiked ? 'border-rose-200 bg-rose-50 text-rose-500' : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300'"
-                @click="toggleLike"
+                class="flex flex-1 items-center justify-center gap-2  rounded-e-sm  bg-blue-800 px-6 py-4 text-sm font-bold text-white shadow-xl shadow-blue-500/25 transition-all duration-200 hover:bg-blue-700 hover:shadow-blue-500/35 active:scale-[0.98]"
+                @click="handleAddToCart"
               >
                 <svg
                   class="h-4 w-4"

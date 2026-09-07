@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ProductCard from '../components/ProductCard.vue'
 import { useProductStore } from '../stores/productApi'
@@ -7,40 +7,51 @@ import { useProductStore } from '../stores/productApi'
 const route = useRoute()
 const productStore = useProductStore()
 
-// Get search query from URL
-const searchTerm = computed(() => {
+const selectedCategory = ref('')
+const showSidebar = ref(false)
+
+const handleScroll = () => {
+  showSidebar.value = window.scrollY > 120
+}
+
+onMounted(() => {
+  productStore.getAllProducts()
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+
+const searchQuery = computed(() => {
   return typeof route.query.search === 'string'
-    ? route.query.search.trim().toLowerCase()
+    ? route.query.search.trim()
     : ''
 })
 
 // Filter products based on search
 const filteredProducts = computed(() => {
   return (productStore.productList ?? []).filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.value)
+    product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
 })
 
-// Get all products
-const allProducts = computed(() => {
-  return productStore.productList ?? []
+// Get unique categories from products
+const categories = computed(() => {
+  return Array.from(new Set((productStore.productList ?? []).map((p) => p.category)))
 })
 
-// Get Smartphone products
-const smartphones = computed(() => {
-  return (productStore.productList ?? []).filter(
-    (product) => product.category === 'Phone'
-  )
-})
-const laptop = computed(() => {
-  return (productStore.productList ?? []).filter(
-    (product) => product.category === 'Laptop'
-  )
-})
-
-// Get all products when page loads
-onMounted(() => {
-  productStore.getAllProducts()
+// Group products by category
+const groupedProducts = computed(() => {
+  const list = productStore.productList ?? []
+  const groups: Record<string, typeof list> = {}
+  list.forEach((product) => {
+    if (!groups[product.category]) {
+      groups[product.category] = []
+    }
+    groups[product.category].push(product)
+  })
+  return groups
 })
 </script>
 
@@ -55,102 +66,183 @@ onMounted(() => {
     </h1>
   </div>
 
-  <!-- Main Content -->
-  <div v-else>
+  <template v-else>
 
-    <!-- ================= SEARCH RESULT ================= -->
-
-    <template v-if="searchTerm">
-
-      <h1 class="py-10 pl-30 text-2xl font-bold">
-        Search results for: {{ searchTerm }}
-      </h1>
-
-      <p class="px-10 text-gray-600">
-        {{ filteredProducts.length }}
-        product{{ filteredProducts.length === 1 ? '' : 's' }} found
-      </p>
-
-      <!-- Products Found -->
+    <!-- Sidebar -->
+    <Transition name="fade">
       <div
-        v-if="filteredProducts.length > 0"
-        class="grid grid-cols-1  gap-4 md:m-10 md:grid-cols-3 lg:m-15 lg:grid-cols-4"
+        v-if="showSidebar"
+        class="fixed bottom-6 right-6 z-50 w-64 rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-lg backdrop-blur"
       >
-        <ProductCard
-          v-for="product in filteredProducts"
-          :key="product.id"
-          :id="product.id"
-          :name="product.name"
-          :price="product.price"
-          :description="product.description"
-          :image="product.image"
-        />
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Categories
+        </h3>
+        <div class="flex max-h-64 flex-col gap-2 overflow-y-auto">
+          <button
+            type="button"
+            @click="selectedCategory = ''"
+            :class="selectedCategory === '' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'"
+            class="cursor-pointer rounded-lg px-3 py-2 text-left text-sm transition-colors duration-200"
+          >
+            All Categories
+          </button>
+          <button
+            v-for="category in categories"
+            :key="category"
+            type="button"
+            @click="selectedCategory = category"
+            :class="selectedCategory === category ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'"
+            class="cursor-pointer rounded-lg px-3 py-2 text-left text-sm transition-colors duration-200"
+          >
+            {{ category }}
+          </button>
+        </div>
       </div>
+    </Transition>
 
-      <!-- No Products Found -->
-      <div
-        v-else
-        class="flex min-h-100 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center"
-      >
+    <!-- Main Content -->
+    <div class="mx-auto max-w-7xl px-4 py-8">
+
+      <!-- ================= SEARCH RESULT ================= -->
+
+      <template v-if="searchQuery">
+
+        <h1 class="py-10 text-2xl font-bold">
+          Search results for: "{{ searchQuery }}"
+        </h1>
+
+        <p class="px-10 text-gray-600">
+          {{ filteredProducts.length }}
+          product{{ filteredProducts.length === 1 ? '' : 's' }} found
+        </p>
+
+        <!-- Products Found -->
         <div
-          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-3xl"
+          v-if="filteredProducts.length > 0"
+          class="grid grid-cols-1 gap-4 py-6 md:grid-cols-3 lg:grid-cols-5"
         >
-          🔍
+          <ProductCard
+            v-for="product in filteredProducts"
+            :key="product.id"
+            :id="product.id"
+            :name="product.name"
+            :price="product.finalPrice"
+            :description="product.description"
+            :image="product.image"
+            :category="product.category"
+            :inStock="product.stock > 0"
+          />
         </div>
 
-        <h3 class="mt-4 text-lg font-bold text-slate-900">
-          No products found
-        </h3>
+        <!-- No Products Found -->
+        <div
+          v-else
+          class="flex min-h-100 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center"
+        >
+          <div
+            class="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-3xl"
+          >
+            🔍
+          </div>
 
-        <p class="mt-1 text-sm text-slate-500">
-          We couldn't find any products matching
-          "{{ searchTerm }}".
-        </p>
-      </div>
+          <h3 class="mt-4 text-lg font-bold text-slate-900">
+            No products found
+          </h3>
 
-    </template>
+          <p class="mt-1 text-sm text-slate-500">
+            We couldn't find any products matching
+            "{{ searchQuery }}".
+          </p>
+        </div>
+
+      </template>
 
 
-    <!-- ================= ALL PRODUCTS ================= -->
+      <!-- ================= GROUPED BY CATEGORY ================= -->
 
-    <template v-else>
-      <h1 class="py-5 pl-30 text-2xl font-bold">
-        All Products
-      </h1>
-     <div class="flex flex-wrap gap-3 px-20 md:m-10 lg:m-15">
-  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Phone</h1>
-  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Laptop</h1>
-  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Hardware</h1>
-  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Hardware</h1>
-  <h1 class=" px-5 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer">Hardware</h1>
-</div>
+      <template v-else>
+        <h1 class="py-5 text-2xl font-bold">
+          All Products
+        </h1>
 
-      <div
-        v-if="allProducts.length > 0"
-        class="grid grid-cols-1 px-20 rounded-se-2xl  gap-4 md:m-10 md:grid-cols-3 lg:m-15 lg:grid-cols-5"
-      >
-        <ProductCard
-          v-for="product in allProducts"
-          :key="product.id"
-          :id="product.id"
-          :name="product.name"
-          :price="product.price"
-          :description="product.description"
-          :image="product.image"
-        />
-      </div>
+        <!-- Category Filter Tags -->
+        <div class="flex flex-wrap justify-start gap-3 pb-6">
+          <button
+            type="button"
+            @click="selectedCategory = ''"
+            :class="selectedCategory === '' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            class="cursor-point rounded-sm px-5 py-1.5 text-sm font-medium transition-colors duration-200"
+          >
+            All Categories
+          </button>
+          <button
+            v-for="category in categories"
+            :key="category"
+            type="button"
+            @click="selectedCategory = category"
+            :class="selectedCategory === category ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            class="cursor-pointer rounded-sm px-5 py-1.5 text-sm font-medium transition-colors duration-200"
+          >
+            {{ category }}
+          </button>
+        </div>
 
-      <!-- No Products -->
-      <div
-        v-else
-        class="flex min-h-100 items-center justify-center"
-      >
-        <h2 class="text-xl font-bold text-gray-500">
-          No products available
-        </h2>
-      </div>
+        <!-- Render filtered or all grouped categories -->
+        <div
+          v-if="selectedCategory"
+          class="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
+        >
+          <ProductCard
+            v-for="product in groupedProducts[selectedCategory] ?? []"
+            :key="product.id"
+            :id="product.id"
+            :name="product.name"
+            :price="product.finalPrice"
+            :description="product.description"
+            :image="product.image"
+            :category="product.category"
+            :inStock="product.stock > 0"
+          />
+        </div>
 
-    </template>
+        <div v-else>
+          <div
+            v-for="category in categories"
+            :key="category"
+            class="mb-10"
+          >
+            <h2 class="mb-4 text-xl font-bold text-slate-800">{{ category }}</h2>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
+              <ProductCard
+                v-for="product in groupedProducts[category] ?? []"
+                :key="product.id"
+                :id="product.id"
+                :name="product.name"
+                :price="product.finalPrice"
+                :description="product.description"
+                :image="product.image"
+                :category="product.category"
+                :inStock="product.stock > 0"
+              />
+            </div>
+          </div>
+        </div>
 
-  </div>
-</template> 
+      </template>
+
+    </div>
+
+  </template>
+
+</template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

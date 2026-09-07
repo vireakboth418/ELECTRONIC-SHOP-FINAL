@@ -757,15 +757,9 @@
       "total": 3197,
       "status": "Pending"
     }
-<<<<<<< HEAD
 
   ]
 
 }
 
  
-=======
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
-}
->>>>>>> dead73b6f6e34c23f2f2a4a00a3b95b422d33837

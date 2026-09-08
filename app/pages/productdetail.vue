@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { useProductStore } from '../stores/productApi'
 import { useAuthStore } from '../stores/auth'
 import { useCartStore } from '../stores/cart'
@@ -15,17 +15,27 @@ const cart = useCartStore()
 
 const productId = Number(route.query.id)
 const product = ref<Product | null>(null)
+const loadError = ref<string | null>(null)
 
 // Interactive states
 const selectedQuantity = ref(1)
 const isLiked = ref(false)
 const imageError = ref(false)
 const isAddedNotification = ref(false)
+const isCopiedNotification = ref(false)
 
 onMounted(async () => {
   auth.initialize()
-  if (productId) {
+
+  if (!productId) {
+    loadError.value = 'Invalid product id.'
+    return
+  }
+
+  try {
     product.value = await productStore.getProductById(productId)
+  } catch (err) {
+    loadError.value = 'Something went wrong loading this product.'
   }
 })
 
@@ -43,6 +53,11 @@ const totalPrice = computed(() => (price.value * selectedQuantity.value).toFixed
 
 const starArray = computed(() => Array.from({ length: 5 }, (_, i) => i < Math.round(rating.value)))
 
+// Stock is optional on Product — only enforce a ceiling when it's actually present
+const stock = computed(() => (product.value as any)?.stock as number | undefined)
+const isOutOfStock = computed(() => stock.value !== undefined && stock.value <= 0)
+const canIncreaseQuantity = computed(() => stock.value === undefined || selectedQuantity.value < stock.value)
+
 function goBack() {
   if (window.history.length > 1) {
     router.back()
@@ -56,49 +71,57 @@ function toggleLike() {
 }
 
 function updateQuantity(amount: number) {
-  if (selectedQuantity.value + amount >= 1) {
-    selectedQuantity.value += amount
+  const next = selectedQuantity.value + amount
+  if (next < 1) return
+  if (stock.value !== undefined && next > stock.value) return
+  selectedQuantity.value = next
+}
+
+function requireAuth(): boolean {
+  if (!auth.isAuthenticated) {
+    router.push({ path: '/login', query: { redirect: route.fullPath } })
+    return false
   }
+  return true
 }
 
 function handleAddToCart() {
-  if (!auth.isAuthenticated) {
-    router.push({ path: '/login', query: { redirect: route.fullPath } })
-    return
+  if (!requireAuth() || !product.value || isOutOfStock.value) return
+
+  for (let i = 0; i < selectedQuantity.value; i++) {
+    cart.addProduct(product.value)
   }
 
-  if (product.value) {
-    for (let i = 0; i < selectedQuantity.value; i++) {
-      cart.addProduct(product.value)
-    }
-
-    isAddedNotification.value = true
-    setTimeout(() => {
-      isAddedNotification.value = false
-    }, 2500)
-  }
+  isAddedNotification.value = true
+  setTimeout(() => {
+    isAddedNotification.value = false
+  }, 2500)
 }
 
 function handleBuyNow() {
-  if (!auth.isAuthenticated) {
-    router.push({ path: '/login', query: { redirect: route.fullPath } })
-    return
-  }
+  if (!requireAuth() || !product.value || isOutOfStock.value) return
 
-  if (product.value) {
-    for (let i = 0; i < selectedQuantity.value; i++) {
-      cart.addProduct(product.value)
-    }
-    router.push('/checkout')
+  for (let i = 0; i < selectedQuantity.value; i++) {
+    cart.addProduct(product.value)
   }
+  router.push('/checkout')
 }
 
 function handleChat() {
-  if (!auth.isAuthenticated) {
-    router.push({ path: '/login', query: { redirect: route.fullPath } })
-    return
-  }
+  if (!requireAuth()) return
   router.push({ path: '/chat', query: { productId: product.value?.id } })
+}
+
+async function handleShare() {
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    isCopiedNotification.value = true
+    setTimeout(() => {
+      isCopiedNotification.value = false
+    }, 2000)
+  } catch {
+    // Clipboard API unavailable — fail silently, nothing to add to cart etc.
+  }
 }
 </script>
 
@@ -106,22 +129,26 @@ function handleChat() {
   <div class="min-h-screen bg-slate-50/50 py-8 md:py-12">
     <!-- Loading State -->
     <div v-if="productStore.isloading" class="flex min-h-[60vh] flex-col items-center justify-center">
-      <div class="h-10 w-10 animate-spin  border-4 border-blue-600 border-t-transparent"></div>
+      <div class="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
       <p class="mt-4 text-sm font-semibold text-slate-500">Loading product details...</p>
     </div>
 
-    <!-- Product Not Found State -->
+    <!-- Error / Not Found State -->
     <div v-else-if="!product" class="flex min-h-[60vh] flex-col items-center justify-center text-center px-4">
-      <div class="flex h-16 w-16 items-center justify-center   text-red-500">
+      <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-500">
         <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
       </div>
-      <h1 class="mt-4 text-2xl font-bold text-slate-900">Product Not Found</h1>
-      <p class="mt-1 text-sm text-slate-500">The product you are looking for does not exist or has been removed.</p>
-      <NuxtLink to="/product" class="mt-6 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-md hover:bg-blue-700">
+      <h1 class="mt-4 text-2xl font-bold text-slate-900">
+        {{ loadError ? 'Something Went Wrong' : 'Product Not Found' }}
+      </h1>
+      <p class="mt-1 text-sm text-slate-500">
+        {{ loadError || 'The product you are looking for does not exist or has been removed.' }}
+      </p>
+      <RouterLink to="/product" class="mt-6 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-md hover:bg-blue-700">
         Back to Products
-      </NuxtLink>
+      </RouterLink>
     </div>
 
     <!-- Main Content -->
@@ -130,7 +157,7 @@ function handleChat() {
       <!-- Back Button -->
       <button
         type="button"
-        class="mb-6 flex items-center gap-2  border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-blue-600 active:scale-95"
+        class="mb-6 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-blue-600 active:scale-95"
         @click="goBack"
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -139,7 +166,7 @@ function handleChat() {
         Back
       </button>
 
-      <div class="overflow-hidden  p-6   md:p-10">
+      <div class="overflow-hidden rounded-3xl bg-white p-6 shadow-sm md:p-10">
         <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
 
           <!-- Product Image -->
@@ -158,7 +185,17 @@ function handleChat() {
             </div>
 
             <!-- Share badge, top right -->
-           
+            <button
+              type="button"
+              aria-label="Copy product link"
+              class="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur transition-colors hover:text-blue-600"
+              @click="handleShare"
+            >
+              <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342a3 3 0 100-2.684m0 2.684a3 3 0 100-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              {{ shareCount }}
+            </button>
           </div>
 
           <!-- Product Info -->
@@ -191,6 +228,9 @@ function handleChat() {
 
             <!-- Price -->
             <p class="mt-4 text-3xl font-black text-blue-600">${{ price.toFixed(2) }}</p>
+            <p v-if="isOutOfStock" class="mt-1 text-xs font-bold uppercase tracking-wider text-red-500">
+              Out of stock
+            </p>
 
             <!-- Description -->
             <p v-if="product.description" class="mt-4 text-sm leading-relaxed text-slate-600">
@@ -205,7 +245,9 @@ function handleChat() {
               <div class="flex items-center rounded-xl border border-blue-500 bg-slate-50/50 p-1">
                 <button
                   type="button"
-                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-white font-bold text-slate-700 shadow-xs transition-colors hover:bg-slate-100"
+                  aria-label="Decrease quantity"
+                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-white font-bold text-slate-700 shadow-xs transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                  :disabled="selectedQuantity <= 1"
                   @click="updateQuantity(-1)"
                 >
                   -
@@ -213,7 +255,9 @@ function handleChat() {
                 <span class="w-10 text-center text-sm font-bold text-slate-900">{{ selectedQuantity }}</span>
                 <button
                   type="button"
-                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-white font-bold text-slate-700 shadow-xs transition-colors hover:bg-slate-100"
+                  aria-label="Increase quantity"
+                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-white font-bold text-slate-700 shadow-xs transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                  :disabled="!canIncreaseQuantity"
                   @click="updateQuantity(1)"
                 >
                   +
@@ -222,8 +266,12 @@ function handleChat() {
 
               <button
                 type="button"
-                class="flex flex-1 items-center justify-center gap-2  rounded-e-sm  bg-blue-800 px-6 py-4 text-sm font-bold text-white shadow-xl shadow-blue-500/25 transition-all duration-200 hover:bg-blue-700 hover:shadow-blue-500/35 active:scale-[0.98]"
-                @click="handleAddToCart"
+                aria-label="Toggle wishlist"
+                class="flex items-center justify-center gap-2 rounded-xl border px-6 py-4 text-sm font-bold shadow-sm transition-all duration-200 active:scale-[0.98]"
+                :class="isLiked
+                  ? 'border-blue-600 bg-blue-50 text-blue-600'
+                  : 'border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-600'"
+                @click="toggleLike"
               >
                 <svg
                   class="h-4 w-4"
@@ -247,7 +295,6 @@ function handleChat() {
             <p class="mt-4 text-sm text-slate-700">
               Total Price :
               <span class="font-bold text-blue-600">${{ totalPrice }}</span>
-            
             </p>
 
             <!-- Actions -->
@@ -262,21 +309,24 @@ function handleChat() {
                 </svg>
                 Chat
               </button>
-  
+
               <button
                 type="button"
-                class="flex-1 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-xl shadow-blue-500/25 transition-all hover:bg-blue-700 active:scale-[0.98]"
+                class="flex-1 rounded-xl border-2 border-blue-600 px-6 py-3 text-sm font-bold text-blue-600 transition-all hover:bg-blue-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+                :disabled="isOutOfStock"
                 @click="handleAddToCart"
               >
                 Add to cart
               </button>
+
+            
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Notification Toast -->
+    <!-- Notification Toasts -->
     <Transition name="fade">
       <div v-if="isAddedNotification && product" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl bg-slate-900 px-5 py-4 text-white shadow-2xl backdrop-blur-xl">
         <div class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white">
@@ -286,6 +336,15 @@ function handleChat() {
           <p class="text-xs font-bold">Added to Cart!</p>
           <p class="text-[11px] text-slate-400">{{ selectedQuantity }}x {{ product.name }}</p>
         </div>
+      </div>
+    </Transition>
+
+    <Transition name="fade">
+      <div v-if="isCopiedNotification" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl bg-slate-900 px-5 py-4 text-white shadow-2xl backdrop-blur-xl">
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
+          ✓
+        </div>
+        <p class="text-xs font-bold">Link copied to clipboard!</p>
       </div>
     </Transition>
   </div>

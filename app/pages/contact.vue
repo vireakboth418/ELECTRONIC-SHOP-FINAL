@@ -1,4 +1,9 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: 'user',
+  title: 'Contact',
+})
+
 import { computed, reactive, ref } from 'vue'
 
 const form = reactive({

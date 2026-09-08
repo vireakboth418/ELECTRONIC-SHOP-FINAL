@@ -11,7 +11,7 @@
       "image": "https://i5.walmartimages.com/seo/Used-Apple-iPhone-11-64GB-Red-Sprint-Used_8e866b89-8726-4515-a7ad-ec5bc96b01d4_1.443661f2c722fc3d0b1d00436e4fa3e2.jpeg",
       "description": "Premium smartphone with a powerful camera and A13 Bionic chip.",
       "brand": "Apple",
-      "stock": 15,
+      "stock": 6,
       "rating": 4.8
     },
     {
@@ -420,11 +420,6 @@
       "stock": 30,
       "rating": 4.7
     },
-
-
-
-
-
     {
       "id": "9",
       "name": "Apple Watch Series 9",
@@ -475,7 +470,7 @@
       "discount": 5,
       "finalPrice": 284.05,
       "tag": "New",
-      "image": "https://m.media-amazon.com/images/I/61AdmFRvbgL._AC_SR290,290_.jpg",  
+      "image": "https://m.media-amazon.com/images/I/61AdmFRvbgL._AC_SR290,290_.jpg",
       "description": "Modern smartwatch with fitness and health tracking features.",
       "brand": "Samsung",
       "stock": 22,
@@ -662,6 +657,20 @@
       "brand": "Anker",
       "stock": 50,
       "rating": 4.5
+    },
+    {
+      "id": "FmA5KEv39Ok",
+      "name": "PS5",
+      "category": "Gaming",
+      "price": 200,
+      "discount": 41,
+      "finalPrice": 118,
+      "tag": "Popular",
+      "image": "https://i5.walmartimages.com/seo/Sony-PlayStation-5-Slim-Digital-Console-with-Extra-Glacier-White-Controller_7ec256d0-7ae7-44cd-9967-79752eb3214e.8f59697894e9ea78b9329a38651a4c64.jpeg",
+      "description": "gamming ",
+      "brand": "Playstation",
+      "stock": 4,
+      "rating": 4.2
     }
   ],
   "categories": [
@@ -705,7 +714,8 @@
       "lastName": "User",
       "name": "Vireakboth User",
       "email": "vireakboth@gmail.com",
-      "password": "123456"
+      "password": "123456",
+      "role": "admin"
     },
     {
       "id": "2",
@@ -713,7 +723,8 @@
       "lastName": "User",
       "name": "Dara User",
       "email": "dara@gmail.com",
-      "password": "123456"
+      "password": "123456",
+      "role": "user"
     },
     {
       "id": "3",
@@ -721,7 +732,8 @@
       "lastName": "Vireakboth",
       "name": "Heng Vireakboth",
       "email": "hengvireak50@gmail.com",
-      "password": "123456"
+      "password": "123456",
+      "role": "admin"
     },
     {
       "id": "5vQ8m2tzPJg",
@@ -729,7 +741,8 @@
       "lastName": "Moung",
       "name": "Seyha Moung",
       "email": "seyhamoung825@gmail.com",
-      "password": "Hello1"
+      "password": "Hello1",
+      "role": "user"
     },
     {
       "firstName": "Elonn",
@@ -737,6 +750,7 @@
       "name": "Elonn Musk",
       "email": "yaya@gmail.com",
       "password": "Hello1",
+      "role": "user",
       "id": "QrrFWyGSqMM"
     }
   ],
@@ -757,9 +771,44 @@
       "total": 3197,
       "status": "Pending"
     }
-
-  ]
-
+  ],
+  "loginLog": [
+    {
+      "id": "seed-1",
+      "userId": "1",
+      "name": "Vireakboth User",
+      "email": "vireakboth@gmail.com",
+      "method": "login",
+      "time": "2026-09-07T09:10:00.000Z",
+      "userAgent": "Chrome / Windows"
+    },
+    {
+      "id": "seed-2",
+      "userId": "3",
+      "name": "Heng Vireakboth",
+      "email": "hengvireak50@gmail.com",
+      "method": "login",
+      "time": "2026-09-07T08:45:00.000Z",
+      "userAgent": "Safari / macOS"
+    },
+    {
+      "id": "seed-3",
+      "userId": "2",
+      "name": "Dara User",
+      "email": "dara@gmail.com",
+      "method": "register",
+      "time": "2026-09-06T19:30:00.000Z",
+      "userAgent": "Chrome / Android"
+    },
+    {
+      "userId": "3",
+      "name": "Heng Vireakboth",
+      "email": "hengvireak50@gmail.com",
+      "method": "login",
+      "time": "2026-09-07T03:54:33.411Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "id": "DiPkfyGp2Ic"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
-
- 

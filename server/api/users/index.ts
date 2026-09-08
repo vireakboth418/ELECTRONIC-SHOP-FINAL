@@ -27,11 +27,11 @@ export default defineEventHandler(async (event) => {
   }
 
   if (method === 'POST') {
-    const body = await readBody(event)
+    const body = (await readBody(event)) as { name?: string; email?: string; password?: string; role?: string }
     const data = readData()
     const users = (data.users as Array<{ id: number; name: string; email: string; password: string }>)
     const maxId = users.reduce((max, u) => (u.id > max ? u.id : max), 0)
-    const newUser = { ...body, id: maxId + 1 } as { id: number; name: string; email: string; password: string }
+    const newUser = { ...body, role: body.role ?? 'user', id: maxId + 1 } as { id: number; name: string; email: string; password: string; role: string }
     users.push(newUser)
     data.users = users
     writeData(data)

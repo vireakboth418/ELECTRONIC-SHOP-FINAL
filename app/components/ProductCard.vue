@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useProductStore } from '../stores/productApi'
+import { useCartStore } from '../stores/cart'
 
 interface Props {
   id: number | string
@@ -20,7 +22,11 @@ const emit = defineEmits<{
   (e: 'add-to-cart', id: number | string): void
 }>()
 
+const productStore = useProductStore()
+const cart = useCartStore()
+
 const imageError = ref(false)
+const justAdded = ref(false)
 
 function handleImageError() {
   imageError.value = true
@@ -29,7 +35,17 @@ function handleImageError() {
 function handleAddToCart(event: Event) {
   event.preventDefault()
   event.stopPropagation()
-  emit('add-to-cart', props.id)
+
+  const product = (productStore.productList ?? []).find((p) => p.id === props.id)
+  if (product) {
+    cart.addProduct(product)
+    emit('add-to-cart', props.id)
+
+    justAdded.value = true
+    window.setTimeout(() => {
+      justAdded.value = false
+    }, 1500)
+  }
 }
 </script>
 
@@ -97,13 +113,17 @@ function handleAddToCart(event: Event) {
 
         <button
           type="button"
-          class="inline-flex items-center gap-2 rounded-se-2xl bg-blue-600 px-2 py-2  text-xs font-semibold text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+          class="inline-flex items-center gap-2 rounded-se-2xl bg-blue-600 px-2 py-2 text-xs font-semibold text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+          :class="{ 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/20': justAdded }"
           @click="handleAddToCart"
         >
-          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg v-if="!justAdded" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"  />
           </svg>
-          Add to Cart
+          <svg v-else class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+          {{ justAdded ? 'Added!' : 'Add to Cart' }}
         </button>
       </div>
     </div>

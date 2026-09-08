@@ -15,6 +15,8 @@ const cart = useCartStore()
 const productStore = useProductStore()
 const route = useRoute()
 
+const isAdmin = computed(() => auth.user?.role === 'admin')
+
 const isVisible = ref(true)
 const searchQuery = ref('')
 const selectedCategory = ref('')
@@ -141,7 +143,7 @@ function closeMobileMenu() {
           <!-- Brand Logo -->
           <NuxtLink to="/" class="group flex shrink-0 items-center gap-3 focus:outline-none" @click="closeMobileMenu">
             <!-- SVG Cart + Circuit Vector -->
-            <svg class="h-9 w-auto" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="h-8 w-auto sm:h-9" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 24H35L52 62H102L118 36" stroke="#1E293B" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
               <circle cx="58" cy="72" r="5" fill="none" stroke="#1E293B" stroke-width="4"/>
               <circle cx="96" cy="72" r="5" fill="none" stroke="#1E293B" stroke-width="4"/>
@@ -158,7 +160,7 @@ function closeMobileMenu() {
 
             <div class="flex items-center text-xl font-extrabold tracking-tight">
               <span class="text-[#154B9C]">KHMER</span>
-              <span class="text-[#DC2626]">ES</span>
+              <span class="text-[#DC2626]"> ELECTRO</span>
             </div>
           </NuxtLink>
 
@@ -203,9 +205,9 @@ function closeMobileMenu() {
               />
               
               <!-- Search Button with Blue Color and Hover Transition -->
-              <button type="submit" class="flex h-9 items-center gap-1.5 rounded-lg bg-[#154B9C] px-4 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 active:scale-95">
+              <button type="submit" class="flex h-9 items-center gap-1.5 rounded-lg bg-[#154B9C] px-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 active:scale-95 sm:px-4">
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                Search
+                <span class="hidden sm:inline">Search</span>
               </button>
             </div>
 
@@ -223,12 +225,19 @@ function closeMobileMenu() {
           </form>
 
           <!-- Navigation Links -->
-          <div class="hidden items-center gap-6 md:flex">
+          <div class="hidden items-center gap-6 lg:flex">
             <div class="flex items-center gap-6 text-xs font-semibold text-slate-700">
               <NuxtLink to="/" class="transition-colors hover:text-blue-600">Home</NuxtLink>
               <NuxtLink to="/product" class="transition-colors hover:text-blue-600">Products</NuxtLink>
               <NuxtLink to="/contact" class="transition-colors hover:text-blue-600">Contact</NuxtLink>
               <NuxtLink to="/about" class="transition-colors hover:text-blue-600">About</NuxtLink>
+              <NuxtLink
+                v-if="isAdmin"
+                to="/admin"
+                class="rounded-lg bg-slate-900 px-3 py-1.5 font-bold text-white transition-colors hover:bg-blue-700"
+              >
+                Admin
+              </NuxtLink>
             </div>
 
             <div class="h-5 w-px bg-slate-300"></div>
@@ -269,14 +278,14 @@ function closeMobileMenu() {
           </div>
 
           <!-- Mobile Hamburger -->
-          <button class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-slate-200/60 text-slate-700 hover:text-blue-600 md:hidden" :aria-expanded="isMobileMenuOpen" aria-label="Toggle menu" @click="isMobileMenuOpen = !isMobileMenuOpen">
+          <button class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-slate-200/60 text-slate-700 hover:text-blue-600 lg:hidden" :aria-expanded="isMobileMenuOpen" aria-label="Toggle menu" @click="isMobileMenuOpen = !isMobileMenuOpen">
             <svg v-if="!isMobileMenuOpen" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
             <svg v-else class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" /></svg>
           </button>
         </div>
 
         <!-- Mobile Drawer Menu -->
-        <div v-if="isMobileMenuOpen" class="absolute left-0 right-0 border-b border-slate-300 bg-slate-100/95 px-4 py-4 shadow-xl backdrop-blur-xl md:hidden">
+        <div v-if="isMobileMenuOpen" class="absolute left-0 right-0 border-b border-slate-300 bg-slate-100/95 px-4 py-4 shadow-xl backdrop-blur-xl lg:hidden">
           <form class="relative mb-4" @submit.prevent="search">
             <div class="flex items-center overflow-hidden rounded-lg border border-slate-300 bg-slate-200/60 p-1">
               <input id="mobile-search" v-model="searchQuery" type="search" placeholder="Search products..." class="w-full bg-transparent px-3 py-1.5 text-xs font-medium text-slate-800 outline-none" />
@@ -299,6 +308,14 @@ function closeMobileMenu() {
             <NuxtLink to="/product" class="rounded-lg px-3 py-2 text-xs hover:bg-blue-50 hover:text-blue-600" @click="closeMobileMenu">Products</NuxtLink>
             <NuxtLink to="/contact" class="rounded-lg px-3 py-2 text-xs hover:bg-blue-50 hover:text-blue-600" @click="closeMobileMenu">Contact</NuxtLink>
             <NuxtLink to="/about" class="rounded-lg px-3 py-2 text-xs hover:bg-blue-50 hover:text-blue-600" @click="closeMobileMenu">About</NuxtLink>
+            <NuxtLink
+              v-if="isAdmin"
+              to="/admin"
+              class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white hover:bg-blue-700"
+              @click="closeMobileMenu"
+            >
+              Admin
+            </NuxtLink>
             
             <NuxtLink to="/cart" class="flex items-center justify-between rounded-lg px-3 py-2 text-xs hover:bg-blue-50 hover:text-blue-600" @click="closeMobileMenu">
               <span>Cart</span>

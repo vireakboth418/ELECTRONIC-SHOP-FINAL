@@ -1,4 +1,10 @@
 <script setup lang="ts">
+
+definePageMeta({
+  layout: 'user',
+  title: 'Home',
+})
+
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import { useProductStore } from '../stores/productApi'
@@ -72,8 +78,8 @@ onBeforeUnmount(() => {
 
       <div class="relative z-10 mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
         <div class="max-w-2xl">
-          <p class="text-sm font-bold uppercase tracking-[0.2em] text-blue-300">New technology, made simple</p>
-          <h1 class="mt-5 text-4xl font-black tracking-tight text-white sm:text-6xl">Find tech you'll love.</h1>
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-blue-300">Welocome to Khmer electro</p>
+          <h1 class="mt-5 text-4xl font-black tracking-tight text-white sm:text-6xl">Find whatever you'll love.Both&Seyha</h1>
           <p class="mt-6 max-w-xl text-lg leading-8 text-slate-200">Discover powerful phones, laptops, audio gear, gaming devices, and more—picked for everyday life.</p>
           <div class="mt-9 flex flex-wrap gap-4">
             <NuxtLink to="/product" class="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-950/30 hover:bg-blue-500">Shop all products</NuxtLink>

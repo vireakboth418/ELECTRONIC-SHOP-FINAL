@@ -1,4 +1,10 @@
 <script setup lang="ts">
+
+definePageMeta({
+  layout: 'user',
+  title: 'Products',
+})
+
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ProductCard from '../components/ProductCard.vue'

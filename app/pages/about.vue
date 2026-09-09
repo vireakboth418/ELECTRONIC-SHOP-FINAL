@@ -1,4 +1,9 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: 'user',
+  title: 'About',
+})
+
 const milestones = [
   {
     year: '2015',

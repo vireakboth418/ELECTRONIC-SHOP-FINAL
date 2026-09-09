@@ -7,7 +7,8 @@ type Account = {
   lastName: string; 
   name: string; 
   email: string; 
-  password: string 
+  password: string;
+  role?: string 
 }
 
 type SignedInUser = Omit<Account, 'password'>
@@ -15,6 +16,7 @@ type SignedInUser = Omit<Account, 'password'>
 const SESSION_KEY = 'nuxt-first-session'
 const API_BASE = 'http://localhost:8000'
 const USERS_ENDPOINT = `${API_BASE}/users`
+const LOGIN_LOG_ENDPOINT = `${API_BASE}/loginLog`
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<SignedInUser | null>(null)
@@ -34,6 +36,26 @@ export const useAuthStore = defineStore('auth', () => {
     const { password: _password, ...signedInUser } = account
     user.value = signedInUser
     localStorage.setItem(SESSION_KEY, JSON.stringify(user.value))
+  }
+
+  async function recordLogin(account: Account, method: 'login' | 'register') {
+    try {
+      if (!import.meta.client) return
+      await fetch(LOGIN_LOG_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: account.id ?? '',
+          name: account.name,
+          email: account.email,
+          method,
+          time: new Date().toISOString(),
+          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : ''
+        })
+      })
+    } catch {
+      // Login logging should never block the user from signing in
+    }
   }
 
   async function register(firstName: string, lastName: string, email: string, password: string) {
@@ -61,7 +83,8 @@ export const useAuthStore = defineStore('auth', () => {
       lastName: cleanLastName,
       name: `${cleanFirstName} ${cleanLastName}`,
       email: normalizedEmail,
-      password
+      password,
+      role: 'user'
     }
 
     const response = await fetch(USERS_ENDPOINT, {
@@ -78,6 +101,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const newAccount = await response.json() as Account
     startSession(newAccount)
+    await recordLogin(newAccount, 'register')
   }
 
   async function login(email: string, password: string) {
@@ -89,6 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
     const account = accounts.find((item) => item.password === password)
     if (!account) throw new Error('Incorrect email or password.')
     startSession(account)
+    await recordLogin(account, 'login')
   }
 
   function logout() { 
@@ -96,5 +121,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem(SESSION_KEY) 
   }
 
-  return { user, isReady, isAuthenticated, initialize, register, login, logout }
+  return { user, isReady, isAuthenticated, initialize, register, login, logout, recordLogin }
 })
